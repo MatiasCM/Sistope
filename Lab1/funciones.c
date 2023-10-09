@@ -28,7 +28,7 @@ int leerArchivo(char *nombre, Particula **lista, int *cantidad) {
     }
 
     for (int i = 0; i < n; i++) {
-        if (fscanf(archivo, "%d %f", &listaP[i].posicion, &listaP[i].energia) != 2) {
+        if (fscanf(archivo, "%d %lf", &listaP[i].posicion, &listaP[i].energia) != 2) {
             printf("Error al leer los datos de la partícula %d\n", i + 1);
             free(listaP);
             fclose(archivo);
@@ -43,10 +43,9 @@ int leerArchivo(char *nombre, Particula **lista, int *cantidad) {
     return 0;
 }
 
-//ecuacion de energia
-float calcularEnergia(int N, int i, int j, float Ep) {
-    float MIN_ENERGY = pow(10, -3) / N;
-    float E = (pow(10,3) * Ep)/(N*(sqrt(abs(j-i)+1)));
+double calcularEnergia(int N, int i, int j, double Ep) {
+    double MIN_ENERGY = pow(10, -3) / N;
+    double E = (pow(10,3) * Ep)/(N*(sqrt(abs(j-i)+1)));
     
     if (E >= MIN_ENERGY) {
         return E;
@@ -55,56 +54,7 @@ float calcularEnergia(int N, int i, int j, float Ep) {
     return 0;
 }
 
-/*int energia(int nC, int nP, Particula *listaP, float *listaC) {
-    // Inicializar la listaC con ceros
-    for (int i = 0; i < nC; i++) {
-        listaC[i] = 0.0;
-    }
-
-    // Inicializar un arreglo para registrar los cambios en listaC
-    int cambios[nC];
-    for (int i = 0; i < nC; i++) {
-        cambios[i] = 0;
-    }
-
-    // Calcular la energía para cada partícula y acumularla en la celda correspondiente
-    for (int j = 0; j < nP; j++) {
-        int celda = listaP[j].posicion;
-        float energia = listaP[j].energia;
-
-        // Acumular la energía en la celda correspondiente
-        listaC[celda] += calcularEnergia(nC, celda, listaP[j].posicion, energia);
-
-        // Registrar el cambio en la celda
-        cambios[celda] = 1;
-    }
-
-    // Encontrar la celda con la energía máxima
-    float max = listaC[0];
-    int pos = 0;
-
-    for (int i = 1; i < nC; i++) {
-        if (listaC[i] > max) {
-            max = listaC[i];
-            pos = i;
-        }
-    }
-
-    // Realizar los cambios en listaC
-    for (int i = 0; i < nC; i++) {
-        if (cambios[i] == 1) {
-            listaC[i] = max;
-        }
-    }
-
-    return pos;
-}*/
-
-
-
-
-
-int energia(int nC, int nP, Particula * listaP, float * listaC){
+int energia(int nC, int nP, Particula * listaP, double * listaC){
 
     //doble ciclo que recorre las celdas y particulas y le asigna la energia celda por celda
 	for(int i = 0 ; i < nC; i++){
@@ -115,7 +65,7 @@ int energia(int nC, int nP, Particula * listaP, float * listaC){
 	}
 
     int pos = 0;
-    float max = listaC[0]; // Inicializar con el valor de la primera celda
+    double max = listaC[0]; // Inicializar con el valor de la primera celda
     for (int i = 1; i < nC; i++) { // Comenzar desde la segunda celda
         if (listaC[i] > max) {
             max = listaC[i];
@@ -126,7 +76,7 @@ int energia(int nC, int nP, Particula * listaP, float * listaC){
   
 }
 
-int crearArchivo(char *nombre, float *celdas, int n, int posicion, float max) {
+int crearArchivo(char *nombre, double *celdas, int n, int posicion, double max) {
     // Se abre el archivo en modo escritura
     FILE *archivo = fopen(nombre, "wt");
     
@@ -146,7 +96,14 @@ int crearArchivo(char *nombre, float *celdas, int n, int posicion, float max) {
     return 0;
 }
 
-//un main que no hace nada para pruebas
-/*int main(int argc, char **argv) {
-    return 0;
-}*/
+void imprimirGrafico(int nC, double * listaC, int posMax){
+    double max=listaC[posMax];
+    for(int i=0;i<nC;i++){
+        double energiaNormalizada = (listaC[i]*50)/max;
+        printf("%d %lf |",i,listaC[i]);
+        for(int j=0;j<(int)energiaNormalizada;j++){
+            printf("o");
+        }
+        printf("\n");
+    }
+}

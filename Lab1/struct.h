@@ -3,7 +3,7 @@
 
 typedef struct {
   int posicion; //posicion donde caera la particula
-  float energia; //energia de la particula
+  double energia; //energia de la particula
 }Particula;
 
 
