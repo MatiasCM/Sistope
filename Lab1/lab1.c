@@ -12,20 +12,26 @@ int main(int argc, char **argv){
     char *archivoSalida = NULL;
     int numeroCeldas;
     int imprimir;
+    int obligatorioN = 0;
+    int obligatorioI = 0;
+    int obligatorioO = 0;
 
     while ((option = getopt(argc, argv, "N:i:o:D")) != -1){
         switch (option){
             //N es el numero de celdas que contendra el arreglo de energia de particulas
             case 'N':
                 sscanf(optarg,"%d", &numeroCeldas);
+                obligatorioN = 1;
                 break;
             //i es el nombre del archivo de entrada
             case 'i':
                 archivoEntrada= optarg;
+                obligatorioI = 1;
                 break;   
             //o es el nombre del archivo de salida                      
             case 'o':
                 archivoSalida= optarg;
+                obligatorioO = 1;
                 break;
             //D es una bandera que muestra los "o"
             case 'D':
@@ -34,20 +40,16 @@ int main(int argc, char **argv){
             
             //protocolo de correcion si es que se entrega una opcion invalida
             case '?':
-                if (optopt == 'N' || optopt == 'i' || optopt == 'o' || optopt == 'D'){
-                    fprintf(stderr, "Opcion -%c requiere un argumento.\n", optopt);
-                }
-                else if (isprint(optopt)){
-                    fprintf(stderr, "Opcion desconocida `-%c'.\n", optopt);
-                }
-                else{
-                    fprintf(stderr, "Opcion con caracter desconocido `\\x%x'.\n", optopt);
-                }
+                printf("Opcion invalida\n");
                 return 1;
             default:
                 abort();
-        
         }
+    }
+
+    if (obligatorioN == 0 || obligatorioI == 0 || obligatorioO == 0){
+        printf("Faltan cosaswefwefewf\n");
+        return 0;
     }
 
     if (numeroCeldas < 1){
