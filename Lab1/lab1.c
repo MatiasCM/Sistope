@@ -11,7 +11,7 @@ int main(int argc, char **argv){
     char *archivoEntrada = NULL;
     char *archivoSalida = NULL;
     int numeroCeldas;
-    int cosa = 0;
+    int imprimir;
 
     while ((option = getopt(argc, argv, "N:i:o:D")) != -1){
         switch (option){
@@ -29,7 +29,7 @@ int main(int argc, char **argv){
                 break;
             //D es una bandera que muestra los "o"
             case 'D':
-                cosa = 1;
+                imprimir = 1;
                 break;
             
             //protocolo de correcion si es que se entrega una opcion invalida
@@ -79,9 +79,8 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    if (cosa == 1) {
+    if(imprimir == 1){
         imprimirGrafico(numeroCeldas, celdas, posicionMaxima);
-        printf("\n");
     }
 
     free(listaP);
