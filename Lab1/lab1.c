@@ -48,7 +48,7 @@ int main(int argc, char **argv){
     }
 
     if (obligatorioN == 0 || obligatorioI == 0 || obligatorioO == 0){
-        printf("Faltan cosaswefwefewf\n");
+        printf("Faltan banderas\n");
         return 0;
     }
 
