@@ -3,6 +3,8 @@
 #include <string.h>
 #include <getopt.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 int main(int argc, char **argv){
 
@@ -78,6 +80,23 @@ int main(int argc, char **argv){
     if (numeroChunks < 1){
         printf("El numero de chunks c tiene que ser mayor o igual a 1\n");
         return 0;
+    }
+
+    int pid = fork(); 
+    if (pid == 0){
+        char N[10];
+        char P[10];
+        char c[10];
+        char D[10];
+        sprintf(N, "%d", numeroCeldas);
+        sprintf(P, "%d", numeroProcesos);
+        sprintf(c, "%d", numeroChunks);
+        sprintf(D, "%d", imprimir);
+        char *argv[] = {"./broker", N, P, archivoEntrada, archivoSalida, c, D, NULL};
+        execv(argv[0], argv);
+    }
+    else{
+        wait(NULL);
     }
 
 }
