@@ -5,12 +5,13 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "struct.h"
 
-int main(int argc, char **argv){
+int main(int argc, char *argv[]){
 
     char option;
-    char *archivoEntrada = NULL;
-    char *archivoSalida = NULL;
+    char archivoEntrada[100];
+    char archivoSalida[100];
     int numeroCeldas;
     int imprimir;
     int numeroProcesos;
@@ -35,12 +36,24 @@ int main(int argc, char **argv){
                 break;
             //i es el nombre del archivo de entrada
             case 'i':
-                archivoEntrada= optarg;
+                strcpy(archivoEntrada, optarg);
+                // Verificacion del archivo de entrada
+                FILE *fp = fopen(archivoEntrada, "r");
+                if (fp == NULL){ // Verificamos que el archivo exista
+                    printf("El archivo indicado en -i no existe.\n");
+                    exit(0);
+                }
+
+                if (fgetc(fp) == EOF){ // Verificamos que el archivo no este vacio
+                    printf("El archivo indicado en -i está vacío.\n");
+                    exit(0);
+                }
+                fclose(fp);
                 obligatorioI = 1;
                 break;   
             //o es el nombre del archivo de salida                      
             case 'o':
-                archivoSalida= optarg;
+                strcpy(archivoSalida, optarg);
                 obligatorioO = 1;
                 break;
             //c es el numero de chunks
@@ -84,19 +97,20 @@ int main(int argc, char **argv){
 
     int pid = fork(); 
     if (pid == 0){
-        char N[10];
-        char P[10];
-        char c[10];
-        char D[10];
+        char N[100];
+        char P[100];
+        char c[100];
+        char D[100];
         sprintf(N, "%d", numeroCeldas);
         sprintf(P, "%d", numeroProcesos);
         sprintf(c, "%d", numeroChunks);
         sprintf(D, "%d", imprimir);
-        char *argv[] = {"./broker", N, P, archivoEntrada, archivoSalida, c, D, NULL};
-        execv(argv[0], argv);
+        char *args[] = {"./broker", N, P, archivoEntrada, archivoSalida, c, D, NULL};
+        execv(args[0], args);
+        exit(0);
     }
-    else{
-        wait(NULL);
-    }
+    wait(NULL);
+
+    return 0;
 
 }
