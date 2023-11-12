@@ -24,7 +24,6 @@ int main(int argc, char *argv[]){
     int pipeWB[numeroProcesos][2]; //pipe worker -> broker
     int pipeBW[numeroProcesos][2]; //pipe broker -> worker
 
-    //crearPipes(numeroProcesos, pipeWB, pipeBW);
     for (int i = 0; i < numeroProcesos; i++){
         if (pipe(pipeWB[i]) == -1 || pipe(pipeBW[i]) == -1){
             printf("No se pudo crear el pipe\n");
