@@ -5,6 +5,7 @@
 #include "struct.h"
 #include <sys/wait.h>
 #include <time.h>
+#include "fbroker.h"
 
 int main(int argc, char *argv[]){
 

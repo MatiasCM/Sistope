@@ -4,6 +4,7 @@
 #include <string.h>
 #include <math.h>
 #include "struct.h"
+#include "fworker.h"
 
 int main(int argc, char const *argv[]){
     int numeroCeldas = atoi(argv[1]);
